@@ -2,26 +2,34 @@ import { useEffect, useState } from 'react'
 
 import './App.css'
 interface Res {
-  message: string;
+  username: string;
 }
 function App() {
-  const [res, setRes] = useState<Res>({ message: 'Test' })
+  const [res, setRes] = useState<Res[]>([])
 
   useEffect(()=>{
     const fetchData =async ()=>{
-      const res = await fetch('http://localhost:4000/');
+      const res = await fetch('http://localhost:4000/users');
       if(!res.ok){
         return console.log('Error while connect')
       }
       const data = await res.json();
-      console.log(data.message)
+      console.log(data)
       setRes(data)
     }
     fetchData();
   },[])
   return (
     <>
-        <p>Data: {res.message}</p>
+        Data2 : {
+         
+
+            res.map((user,index )=>(
+              <p key={index}> {user.username}</p>
+            ))
+          
+        }
+     
      
     </>
   )
