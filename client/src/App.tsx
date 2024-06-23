@@ -1,38 +1,23 @@
-import { useEffect, useState } from 'react'
-
-import './App.css'
-interface Res {
-  username: string;
-}
+import { Suspense, lazy } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import "./App.css";
+import PageLoading from "./component/PageLoading";
+const Home = lazy(() => import("./pages/Home"));
+const Layout = lazy(() => import("./pages/Layout"));
+const SignInPage = lazy(() => import("./pages/SignInPage"));
 function App() {
-  const [res, setRes] = useState<Res[]>([])
-
-  useEffect(()=>{
-    const fetchData =async ()=>{
-      const res = await fetch('http://localhost:4000/users');
-      if(!res.ok){
-        return console.log('Error while connect')
-      }
-      const data = await res.json();
-      console.log(data)
-      setRes(data)
-    }
-    fetchData();
-  },[])
   return (
-    <>
-        Data2 : {
-         
-
-            res.map((user,index )=>(
-              <p key={index}> {user.username}</p>
-            ))
-          
-        }
-     
-     
-    </>
-  )
+    <Router>
+      <Suspense fallback={<PageLoading />}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/home" element={<Home />} />
+          </Route>
+          <Route path="/signin" element={<SignInPage />} />
+        </Routes>
+      </Suspense>
+    </Router>
+  );
 }
-
-export default App
+export default App;
