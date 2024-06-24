@@ -1,35 +1,68 @@
-import { NavLink, useLocation } from "react-router-dom"
+import { useState } from "react";
+import { LuMenu } from "react-icons/lu";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+
+import MobileMenu from "./MobileMenu";
+import { FiAlignLeft } from "react-icons/fi";
 
 const NavigationMenu = () => {
-    const location = useLocation();
-    const menuItems = [
-        {
-            label:'Home',
-            path:'/'
-        },
-        {
-            label:'Signin',
-            path:'/signin'
-        }
-    ]
+  const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuItems = [
+    {
+      label: "Home",
+      path: "/",
+    },
+    {
+        label: "Resources",
+        path: "/resources",
+      },
+      {
+        label: "Teams",
+        path: "/teams",
+      },
+    {
+      label: "Signin",
+      path: "/signin",
+    },
     
+  ];
+  const handleCloseClick = () => {
+    // Delay setting isMobileMenuOpen to false by 1000 milliseconds (1 second)
+    setTimeout(() => {
+      setIsMobileMenuOpen(false);
+    }, 200);
+  };
+
   return (
-    <nav>
-        <ul className="flex space-x-4">
-            {
-             menuItems.map((item)=>(
-                <li key={item.label}>
-                    <NavLink to={item.path}
-                          className={`${location.pathname === item.path ? 'font-semibold' : 'font-normal'} text-gray-800 hover:text-white transition duration-300 ease-in-out`}
-
-
-                    >{item.label}</NavLink> 
-                    </li>
-             ))   
-            }
-        </ul>
+    <nav className="flex items-center justify-center grow">
+      <ul className=" hidden md:flex space-x-4">
+        {menuItems.map((item) => (
+          <li key={item.label}>
+            <NavLink
+              to={item.path}
+              className={`${
+                location.pathname === item.path
+                  ? "font-semibold"
+                  : "font-normal"
+              } text-gray-800 hover:text-gray-900 transition duration-300 ease-in-out`}
+            >
+              {item.label}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+      <button
+        className="md:hidden" type="button"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      >
+        <FiAlignLeft size={24} />
+      </button>
+      {isMobileMenuOpen && (
+        <MobileMenu handleCloseClick={handleCloseClick}></MobileMenu>
+      )}
     </nav>
-  )
-}
+  );
+};
 
-export default NavigationMenu
+export default NavigationMenu;
