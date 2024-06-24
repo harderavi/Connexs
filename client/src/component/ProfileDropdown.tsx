@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { FiLock, FiLogOut, FiSettings } from 'react-icons/fi'
 import ProfilePic from './ui/ProfilePic'
 import CircleButton from './ui/CircleButton'

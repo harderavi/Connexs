@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { LuMenu } from "react-icons/lu";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+
+import { NavLink, useLocation } from "react-router-dom";
 
 import MobileMenu from "./MobileMenu";
 import { FiAlignLeft } from "react-icons/fi";

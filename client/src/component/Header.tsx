@@ -1,9 +1,8 @@
 import { BiShapeSquare } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import NavigationMenu from "./NavigationMenu";
 import ProfilePic from "./ui/ProfilePic";
-import { FiChevronDown, FiLock, FiLogOut, FiSettings } from "react-icons/fi";
-import CircleButton from "./ui/CircleButton";
+import { FiChevronDown,  } from "react-icons/fi";
 import { useState } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 
