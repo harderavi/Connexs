@@ -1,5 +1,4 @@
 import React from 'react'
-import { BiLoader } from 'react-icons/bi';
 
 interface ButtonProps {
     children: string | React.ReactNode;

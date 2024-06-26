@@ -1,12 +1,8 @@
-import { BiShapeSquare } from "react-icons/bi";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { useDispatch } from "react-redux";
 import { toggleTheme } from "../store/slices/themeSlice";
 
 const Home = () => {
-  const currentTheme = useSelector(
-    (state: RootState) => state.theme.currrentTheme
-  );
+
   const dispatch = useDispatch();
   return (
     <div className="">
