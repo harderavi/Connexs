@@ -5,15 +5,19 @@ import ProfilePic from "./ui/ProfilePic";
 import { FiChevronDown,  } from "react-icons/fi";
 import { useState } from "react";
 import ProfileDropdown from "./ProfileDropdown";
+import ThemeToggle from "./ui/ThemeToggle";
 
 const Header = () => {
   const [showUserFlyout, setShowUserFlyout] = useState(false);
   const handleUserMenu = () => {
     setShowUserFlyout(!showUserFlyout);
+    setTimeout(()=>{
+        console.log('Delay 1s')
+    },1000)
   };
   return (
-    <header className="border border-slate-200">
-      <div className="flex justify-between items-center max-w-screen-xl mx-auto px-5 py-2">
+    <header className="bg-white dark:bg-gray-900 border-b border-primary-500/50 border-b-1">
+      <div className="flex justify-between items-center max-w-screen-xl mx-auto px-5 py-2 ">
         <Link
           to="/"
           className="flex space-x-2 gap-2 items-center text-xl uppercase "
@@ -21,8 +25,9 @@ const Header = () => {
           <BiShapeSquare size={32} /> Connexs
         </Link>
 
-        <div className="ml-auto flex gap-4">
+        <div className="ml-auto flex gap-8">
           <NavigationMenu />
+          <ThemeToggle/>
           <button
             className="hidden md:flex relative  items-center gap-x-1 "
             onClick={handleUserMenu}

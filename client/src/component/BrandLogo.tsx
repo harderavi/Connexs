@@ -8,7 +8,7 @@ interface BrandLogoProps  {
 const BrandLogo:React.FC<BrandLogoProps> = ({size='sm', styleClass}) => {
     const LogoSize = size === 'lg'? 48 : size === 'md'? 32 : 24
   return (
-    <Link to="/" className={`flex space-x-2 gap-2 items-center text-xl uppercase ${styleClass} `}><BiShapeSquare size={LogoSize} /> Connexs</Link> 
+    <Link to="/" className={`flex space-x-2 gap-2 items-center text-xl uppercase outline-0 ${styleClass} `}><BiShapeSquare size={LogoSize} /> Connexs</Link> 
   )
 }
 

@@ -1,14 +1,38 @@
-import { BiShapeSquare } from 'react-icons/bi'
+import { BiShapeSquare } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { toggleTheme } from "../store/slices/themeSlice";
 
 const Home = () => {
+  const currentTheme = useSelector(
+    (state: RootState) => state.theme.currrentTheme
+  );
+  const dispatch = useDispatch();
   return (
-    <div>
-         <div className="border border-slate-300 rounded-md p-5  flex flex-col">
-        <span className="flex  justify-center"><BiShapeSquare size={32} /></span>
-        <p> Welcome to Connexs Application</p>
+    <div className="">
+      <button className="" onClick={() => dispatch(toggleTheme())}></button>
+      <div className="">
+        <h2 className="text-primary dark:text-primary-light">
+          Primary Section
+        </h2>
+        <div className="flex gap-5">
+          <div className="p-8 bg-surface-dark flex gap-6">
+            <input className="border-0 border-primary-200 px-10 py-2 bg-surface-light   rounded-lg" />
+            <input className="border-0 border-primary-200 px-10 py-2 bg-surface   rounded-lg" />
+          </div>
+          <button className="bg-primary text-on-primary p-2 rounded border border-primary">
+            Primary Action
+          </button>
+          <button className="bg-secondary text-on-secondary p-2 rounded border border-secondary mt-2">
+            Secondary Action
+          </button>
+          <button className="bg-tertiary text-on-tertiary p-2 rounded border border-tertiary mt-2">
+            Tertiary Action
+          </button>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

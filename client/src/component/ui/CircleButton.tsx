@@ -5,7 +5,7 @@ interface CircleButtonProps {
   handleClick: (e:React.MouseEvent<HTMLButtonElement>) => void;
 }
 const CircleButton = ({ children, size, styleClass, handleClick }: CircleButtonProps) => {
-  const btnSize = size === "lg" ? "w-24 h-24" : size === "md" ? "w-8 h-8" : "w-4 h-4";
+  const btnSize = size === "lg" ? "w-24 h-24" : size === "md" ? "w-8 h-8" : "w-4 h-4 ";
   
   return (
     <button

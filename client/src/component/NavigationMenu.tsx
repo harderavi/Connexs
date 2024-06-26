@@ -36,7 +36,7 @@ const NavigationMenu = () => {
 
   return (
     <nav className="flex items-center justify-center grow">
-      <ul className=" hidden md:flex space-x-4">
+      <ul className=" hidden md:flex space-x-12">
         {menuItems.map((item) => (
           <li key={item.label}>
             <NavLink
@@ -45,7 +45,7 @@ const NavigationMenu = () => {
                 location.pathname === item.path
                   ? "font-semibold"
                   : "font-normal"
-              } text-gray-800 hover:text-gray-900 transition duration-300 ease-in-out`}
+              } px-2  transition duration-300 ease-in-out`}
             >
               {item.label}
             </NavLink>
