@@ -17,7 +17,6 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
 app.get('/', (req, res) => {
     res.send({ message: "App is working get" })
 });
-app.use('/api/auth', authRouter)
 
 app.listen('4000', () => {
     console.log('App is running on port 4000');
