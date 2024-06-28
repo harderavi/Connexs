@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { toggleTheme } from "../store/slices/themeSlice";
-import {setUser, signoutSuccess} from "../store/slices/authSlice";
+import { signoutSuccess} from "../store/slices/authSlice";
 import { useEffect } from "react";
 const Home = () => {
 
