@@ -2,9 +2,10 @@ import express from "express";
 import mongoose from  "mongoose";
 import cors  from "cors"
 import "dotenv/config";
-
+import authRouter from "./routes/auth.route.js"
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URL).then(()=>{
     console.log("MongoDB connected ")
@@ -16,11 +17,11 @@ const userSchema = new mongoose.Schema({
     email: String
 });
 
-const User = mongoose.model('AppUser', userSchema);
 
 app.get('/',(req, res)=>{
       res.send({message: "App is working get"})
     });
+    app.use('/api/auth', authRouter )
 // Endpoint to get all user data
 app.get('/users', async (req, res) => {
     try {

@@ -1,11 +1,19 @@
 import { useDispatch } from "react-redux";
 import { toggleTheme } from "../store/slices/themeSlice";
-
+import {setUser, signoutSuccess} from "../store/slices/authSlice";
+import { useEffect } from "react";
 const Home = () => {
 
   const dispatch = useDispatch();
+useEffect(()=>{
+},[])
+
+
+
   return (
     <div className="">
+      
+      <button className="" onClick={() => dispatch(signoutSuccess())}>Signout</button>
       <button className="" onClick={() => dispatch(toggleTheme())}></button>
       <div className="">
         <h2 className="text-primary dark:text-primary-light">
