@@ -4,7 +4,13 @@ import cors from "cors"
 import "dotenv/config";
 import authRouter from "./routes/auth.route.js"
 const app = express();
-app.use(cors());
+// Configure CORS
+const corsOptions = {
+    origin: 'https://connexs.vercel.app', // Your frontend URL
+    credentials: true, // Enable the cookie-based authentication
+  };
+  app.use(cors(corsOptions));
+  
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URL).then(() => {
