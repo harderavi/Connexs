@@ -18,16 +18,7 @@ app.get('/', (req, res) => {
     res.send({ message: "App is working get" })
 });
 app.use('/api/auth', authRouter)
-// Endpoint to get all user data
-app.get('/users', async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-        console.log(users)
-    } catch (err) {
-        res.status(500).json({ error: 'An error occurred' });
-    }
-});
+
 app.listen('4000', () => {
     console.log('App is running on port 4000');
 })
