@@ -11,11 +11,6 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
     console.log("MongoDB connected ")
 }).catch(err => cansole.error(err))
 
-// Define User schema and model
-const userSchema = new mongoose.Schema({
-    username: String,
-    email: String 
-});
 
 
 app.get('/', (req, res) => {
