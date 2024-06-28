@@ -7,6 +7,7 @@ import { BiLoader } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/slices/authSlice";
 import { Link } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const Signin = () => {
     }
     console.log(formData);
     try {
-      const response = await fetch("/api/auth/signin", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Make sure this line is present
