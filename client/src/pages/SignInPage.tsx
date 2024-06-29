@@ -38,7 +38,6 @@ const Signin = () => {
       setLoader(false);
       return;
     }
-    console.log(formData);
     try {
       const response = await fetch(`${API_BASE_URL}/api/auth/signin`, {
         method: "POST",
@@ -59,12 +58,14 @@ const Signin = () => {
   };
 
   return (
-    <div className="h-screen bg-surface-light flex justify-center items-center ">
-      <div className="max-w-md w-full flex flex-col gap-y-6">
-        <div>
+    <div className="h-screen bg-surface-light flex justify-center items-center px-5 ">
+      <div className="max-w-xs w-full flex flex-col gap-y-6">
+        <div className="text-center">
+          <div className="flex justify-center">
           <BrandLogo />
-          <h2 className="text-3xl text-left">Welcome Back!</h2>
-        </div>
+          </div>
+          <h2 className="text-3xl ">Welcome Back!</h2>
+        </div> 
         <InputText
           name="email"
           label="Email"

@@ -6,9 +6,12 @@ import { FiChevronDown,  } from "react-icons/fi";
 import { useState } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 import ThemeToggle from "./ui/ThemeToggle";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const Header = () => {
   const [showUserFlyout, setShowUserFlyout] = useState(false);
+  const {user} = useSelector((state:RootState)=>state.auth)
   const handleUserMenu = () => {
     setShowUserFlyout(!showUserFlyout);
     setTimeout(()=>{
@@ -28,16 +31,21 @@ const Header = () => {
         <div className="ml-auto flex gap-8">
           <NavigationMenu />
           <ThemeToggle/>
-          <button
+          { user && 
+
+            <button
             className="hidden md:flex relative  items-center gap-x-1 "
             onClick={handleUserMenu}
-          >
-            <ProfilePic size="sm" />
+            >
+
+              <ProfilePic size="sm" picSrc={user.profilePicture} />
             <FiChevronDown size={14} />
             {showUserFlyout && (
               <ProfileDropdown />
             )}
           </button>
+          
+          }
         </div>
       </div>
     </header>
