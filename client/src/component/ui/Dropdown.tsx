@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import useClickOutside from "../../hooks/useClickOutside";
 import { FiCheck, FiChevronDown } from "react-icons/fi";
 
@@ -16,7 +16,12 @@ interface DropdownProps {
   validate?: boolean;
 }
 
-const Dropdown = ({ title, data, onChange, validate = true }: DropdownProps) => {
+const Dropdown = ({
+  title,
+  data,
+  onChange,
+  validate = true,
+}: DropdownProps) => {
   const [selectedItem, setSelectedItem] = useState<DropdownItem | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -28,21 +33,23 @@ const Dropdown = ({ title, data, onChange, validate = true }: DropdownProps) => 
     callback: () => setIsOpen(false),
   });
 
-  const handleChange = (item: DropdownItem | null) => {
-    setSelectedItem(item);
-    onChange(item?.name);
-    setIsOpen(false);
-  };
+  const handleChange = useCallback((item: DropdownItem | null) => {
+      setSelectedItem(item);
+      onChange(item?.name);
+      setIsOpen(false);
+    },
+    [onChange]
+  );
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (!isOpen && event.key === "ArrowDown") {
-        setIsOpen(true);
-        setFocusedIndex(0);
-        event.preventDefault();
-        return;
-      }
-  
-      if (!isOpen) return;
+      setIsOpen(true);
+      setFocusedIndex(0);
+      event.preventDefault();
+      return;
+    }
+
+    if (!isOpen) return;
 
     switch (event.key) {
       case "ArrowDown":
@@ -99,7 +106,8 @@ const Dropdown = ({ title, data, onChange, validate = true }: DropdownProps) => 
       {isOpen && (
         <div
           className={`absolute left-0 top-full z-10 w-full rounded-b-xl bg-white min-h-20 -translate-y-1 border-t border-primary-50 ${
-            isOpen && "bg-white border border-primary-100 ring-4 ring-primary-50"
+            isOpen &&
+            "bg-white border border-primary-100 ring-4 ring-primary-50"
           }`}
         >
           <ul ref={listRef}>
