@@ -232,7 +232,7 @@ const SignupPage = () => {
             />
           </div>
           {
-            formData.profilePicture &&           <span onClick={handleFileDelete} className="absolute w-8 h-8 cursor-pointer bg-red-600 flex justify-center items-center rounded-full translate-x-10 translate-y-5"><FiTrash className="text-white"/></span>
+            formData.profilePicture && uploadCompleted &&           <span onClick={handleFileDelete} className="absolute w-8 h-8 cursor-pointer bg-red-600 flex justify-center items-center rounded-full translate-x-10 translate-y-5"><FiTrash className="text-white"/></span>
 
           }
         </div>
