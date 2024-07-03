@@ -15,9 +15,9 @@ const Header = () => {
   const handleUserMenu = () => {
     setShowUserFlyout(!showUserFlyout);
     setTimeout(()=>{
-        console.log('Delay 1s')
     },1000)
   };
+
   return (
     <header className="bg-white dark:bg-gray-900 border-b border-primary-500/50 border-b-1">
       <div className="flex justify-between items-center max-w-screen-xl mx-auto px-5 py-2 ">
@@ -41,7 +41,7 @@ const Header = () => {
               <ProfilePic size="sm" picSrc={user.profilePicture} />
             <FiChevronDown size={14} />
             {showUserFlyout && (
-              <ProfileDropdown />
+              <ProfileDropdown onClose={()=>setShowUserFlyout(false)}/>
             )}
           </button>
           

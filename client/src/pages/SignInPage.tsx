@@ -6,7 +6,7 @@ import BrandLogo from "../component/BrandLogo";
 import { BiLoader } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/slices/authSlice";
-import { Link } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Signin = () => {
@@ -14,6 +14,7 @@ const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [loader, setLoader] = useState(false);
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -52,6 +53,8 @@ const Signin = () => {
       const userData = await response.json();
       console.log(userData);
       dispatch(setUser(userData)); // Dispatch setUser action with username from response
+      navigate('/');
+
     } catch (error) {
       console.error("Sign-in error:", error);
     }
@@ -110,7 +113,6 @@ const Signin = () => {
         <Button variant="secondary">
           <BsGoogle /> Continue with Google
         </Button>
-        <Link  to={'/home'}>Home</Link>
       </div>
     </div>
   );

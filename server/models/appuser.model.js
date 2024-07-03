@@ -20,8 +20,13 @@ const appUserSchema = new  mongoose.Schema(
             require: true
         },
         role:{
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref:'Role',
             require: true
+        },
+        team: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Team',
         },
         profilePicture:{
             type: String,

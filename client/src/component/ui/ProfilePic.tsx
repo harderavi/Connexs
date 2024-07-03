@@ -4,9 +4,10 @@ interface ProfilePicProps {
   picSrc?: string;
   size?: "sm" | "md" | "lg";
   styleClass?: string;
+  loading?: boolean
 }
 const ProfilePic: React.FC<ProfilePicProps> = React.memo(
-  ({ picSrc, size = "sm", styleClass }) => {
+  ({ loading=false, picSrc, size = "sm", styleClass }) => {
     const PicSize =
       size === "lg" ? "w-24 h-24 text-4xl" : size === "md" ? "w-8 h-8 text-md" : "w-6 h-6 text-xs";
     const defaultPic =
@@ -31,10 +32,14 @@ const ProfilePic: React.FC<ProfilePicProps> = React.memo(
       img.onload = handleImageLoad;
       img.onerror = handeImageError;
     }, [picSrcPath, handleImageLoad, handeImageError]);
+
     return (
       <div>
         {!isLoaded && (
-          <div className={`${PicSize} bg-gray-50 animate-spin  rounded-full border-0 border-l-2 border-dashed  border-gray-800 ${styleClass}`}> </div>
+          <div className={`${PicSize} absolute z-10 animate-spin  rounded-full border-0 border-l-2 border-dashed  border-gray-800 ${styleClass}`}> </div>
+        )}
+         {loading && (
+          <div className={`${PicSize} absolute z-10 animate-spin  rounded-full border-0 border-l-2 border-dashed  border-gray-800 ${styleClass}`}> </div>
         )}
         {isLoaded && !hasError && (
           <img

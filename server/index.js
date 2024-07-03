@@ -4,6 +4,8 @@ import cors from "cors"
 import "dotenv/config";
 import authRouter from "./routes/auth.route.js"
 import userRouter from "./routes/user.route.js"
+import teamRouter from "./routes/team.route.js"
+import roleRouter from "./routes/role.route.js"
 const app = express();
 // Configure CORS
 const corsOptions = {
@@ -26,7 +28,17 @@ app.get('/', (req, res) => {
 });
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
+app.use('/api/team', teamRouter)
+app.use('/api/role', roleRouter)
 
+app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.json({
+        error: {
+            message: err.message,
+        },
+    });
+});
 app.listen('4000', () => {
     console.log('App is running on port 4000');
 })

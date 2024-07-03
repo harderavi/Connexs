@@ -25,6 +25,10 @@ const NavigationMenu = () => {
       label: "Signin",
       path: "/signin",
     },
+    {
+      label: "Add User",
+      path: "/adduser",
+    },
     
   ];
   const handleCloseClick = () => {
