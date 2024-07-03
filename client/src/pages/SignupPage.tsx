@@ -11,9 +11,9 @@ import {
   getStorage,
   ref,
   uploadBytesResumable,
-} from "firebase/storage";
+} from "firebase/storage"; 
 import { storage } from "../firebase";
-import { FiTrash } from "react-icons/fi";
+import { FiTrash } from "react-icons/fi"; 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
