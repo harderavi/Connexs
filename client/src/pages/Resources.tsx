@@ -40,12 +40,14 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Resources = () => {
   const [resources, setResources] = useState<Resource[]>([]);
   const { user } = useSelector((state: RootState) => state.auth);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number[] >([]);
   const [showForm, setShowForm] = useState(false);
   const [showMedia, setShowMedia] = useState("");
   const [currentCategory, setCurrentCategory] = useState('Recent')
   useEffect(() => {
     fetchResources(currentCategory);
+    setHoveredIndex([])
+
   }, [showMedia, showForm, currentCategory]);
 
   const fetchResources = async (category: string) => {
@@ -68,6 +70,15 @@ const Resources = () => {
       console.error("Error handling important document:", error);
     }
   };
+  const handleCardHover = (index: number) => {
+    // setHoveredIndex(prev => {
+    //   if (!prev.includes(index)) {
+    //     return [...prev, index];
+    //   }
+    //   return prev;
+    // });
+    setHoveredIndex([index])
+  };
 
   return (
     <div>
@@ -80,10 +91,10 @@ const Resources = () => {
             <h2 className="text-2xl font-semibold"> Resource</h2>
           <div className="flex gap-2 items-center">
             <div className="bg-neutral-200 dark:bg-neutral-900 p-1 rounded-lg min-w-96 flex gap-3 ">
-              <ButtonRounded styleClass={`${currentCategory==='Recent'? 'bg-white dark:bg-neutral-800 dark:border-0':'bg-neutral-500/0 border-0'}`} handleClick={()=>setCurrentCategory('Recent')}>Recent</ButtonRounded>
-              <ButtonRounded styleClass={`${currentCategory==='Important'? 'bg-white dark:bg-neutral-800 dark:border-0':'bg-neutral-500/0 border-0'}`} handleClick={()=>setCurrentCategory('Important')}>Important</ButtonRounded>
-              <ButtonRounded styleClass={`${currentCategory==='promotion'? 'bg-white dark:bg-neutral-800 dark:border-0':'bg-neutral-500/0 border-0'}`} handleClick={()=>setCurrentCategory('promotion')}>promotion</ButtonRounded>
-              <ButtonRounded styleClass={`${currentCategory==='printing'? 'bg-white dark:bg-neutral-800 dark:border-0':'bg-neutral-500/0 border-0'}`} handleClick={()=>setCurrentCategory('printing')}>printing</ButtonRounded>
+              <ButtonRounded styleClass={`${currentCategory==='Recent'? 'bg-white/100 dark:bg-neutral-800':'bg-white/0'} border-0`} handleClick={()=>setCurrentCategory('Recent')}>Recent</ButtonRounded>
+              <ButtonRounded styleClass={`${currentCategory==='Important'? 'bg-white/100 dark:bg-neutral-800':'bg-white/0'} border-0`} handleClick={()=>setCurrentCategory('Important')}>Important</ButtonRounded>
+              <ButtonRounded styleClass={`${currentCategory==='promotion'? 'bg-white/100 dark:bg-neutral-800':'bg-white/0'} border-0`} handleClick={()=>setCurrentCategory('promotion')}>promotion</ButtonRounded>
+              <ButtonRounded styleClass={`${currentCategory==='printing'? 'bg-white/100 dark:bg-neutral-800':'bg-white/0'} border-0`} handleClick={()=>setCurrentCategory('printing')}>printing</ButtonRounded>
             </div>
           </div>
           <ButtonCircular size="md" handleClick={() => setShowForm(!showForm)}>
@@ -99,10 +110,10 @@ const Resources = () => {
             <div key={index} className="flex flex-col   rounded">
               <div
                 className="bg-neutral-200 dark:bg-neutral-900 h-48 flex justify-center items-center rounded-lg  overflow-hidden group relative cursor-pointer"
-                onMouseOver={() => setHoveredIndex(index)}
+                onMouseOver={()=>handleCardHover(index)}
                 onClick={() => setShowMedia(resource._id)}
               >
-                {hoveredIndex === index && (
+                {hoveredIndex.includes(index)  && (
                   <>
                     {getFileExtension(resource.url) === "imageType" ?
                      (
@@ -201,7 +212,7 @@ const Resources = () => {
               </div>
               <div
                 className="flex justify-between py-2"
-                onMouseOver={() => setHoveredIndex(index)}
+                onMouseOver={()=>handleCardHover(index)}
               >
                 <div className="flex flex-col">
                   <h3 className="font-semibold text-lg">
