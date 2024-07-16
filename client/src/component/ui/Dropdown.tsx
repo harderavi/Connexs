@@ -39,7 +39,6 @@ const Dropdown = ({
     (item: DropdownItem | null) => {
       setSelectedItem(item);
       onChange(item);
-      console.log(item)
       setIsOpen(false);
     },
     [onChange]

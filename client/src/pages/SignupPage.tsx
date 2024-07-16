@@ -53,15 +53,16 @@ const SignupPage = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  const handleRoleChange = (value:DropdownItem  | undefined) => {
-    console.log(value?.id)
+  const handleRoleChange = (value: DropdownItem | null | undefined) => {
+    console.log(value?.id, '//////////')
     setFormData((prevState) => ({ ...prevState, role: value?.id || "" }));
   };
-  const handleTeamChange = (value: DropdownItem | undefined) => {
+  const handleTeamChange = (value: DropdownItem | null | undefined) => {
     setFormData((prevData) => ({ ...prevData, team: value?.id || "" }));
   };
   const handleFormSubmit = async () => {
     setError("");
+    console.log(formData)
     const { username, email, password, role, team } = formData;
     if (!username || !email || !password || !role || !team) {
       return setError("All fields are required!");
@@ -291,14 +292,14 @@ const SignupPage = () => {
           data={roleData}
           id="role"
           title="User role"
-          onChange={()=>handleRoleChange}
+          onChange={handleRoleChange}
           validate={!!error && !formData.role}
           />
         <Dropdown
           data={teamData}
           id="team"
           title="Team"
-          onChange={()=>handleTeamChange}
+          onChange={handleTeamChange}
           validate={!!error && !formData.team}
           />
         <Button className="mt-4" clickHandle={handleFormSubmit}>

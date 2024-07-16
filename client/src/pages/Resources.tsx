@@ -4,7 +4,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import {
+  FiCalendar,
+  FiCloud,
   FiDownload,
+  FiDownloadCloud,
   FiFileText,
   FiFilm,
   FiFolder,
@@ -43,13 +46,13 @@ const Resources = () => {
   const [showMedia, setShowMedia] = useState("");
   const [currentCategory, setCurrentCategory] = useState('Recent')
   useEffect(() => {
-    fetchResources();
-  }, [showMedia, showForm]);
+    fetchResources(currentCategory);
+  }, [showMedia, showForm, currentCategory]);
 
-  const fetchResources = async () => {
+  const fetchResources = async (category: string) => {
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/resources/getResources`
+        `${API_BASE_URL}/api/resources/getResources?category=${category}&userId=${user?._id}`
       );
       const data = await response.json();
       setResources(data);
@@ -58,14 +61,10 @@ const Resources = () => {
     }
   };
 
-
-
-
-
   const handleImportant = async (documentId: string) => {
     try {
       await markDocumentImportant(user?._id, documentId);
-      fetchResources();
+      fetchResources(currentCategory);
     } catch (error) {
       console.error("Error handling important document:", error);
     }
@@ -78,24 +77,29 @@ const Resources = () => {
           showForm || showMedia ? "pr-[20%]" : ""
         }`}
       >
-        <div className="flex justify-between py-3 ">
-            <h2>Resource List</h2>
+        <div className="flex justify-between py-6 ">
+            <h2 className="text-2xl font-semibold"> Resource</h2>
           <div className="flex gap-2 items-center">
-            <div className="bg-neutral-200 p-1 rounded-lg min-w-96 flex gap-3 ">
-              <ButtonRounded styleClass={`${currentCategory=='Recent'? '': ' bg-neutral-50/0 border-0'}`} handleClick={()=>setCurrentCategory('Recent')}>Recent</ButtonRounded>
-              <ButtonRounded styleClass={`${currentCategory==='Important'? '': 'bg-neutral-50/0 border-0'}`} handleClick={()=>setCurrentCategory('Important')}>Important</ButtonRounded>
-              <ButtonRounded styleClass={`${currentCategory==='Document'? '': 'bg-neutral-50/0 border-0'}`} handleClick={()=>setCurrentCategory('Document')}>Document</ButtonRounded>
+            <div className="bg-neutral-200 dark:bg-neutral-900 p-1 rounded-lg min-w-96 flex gap-3 ">
+              <ButtonRounded styleClass={`${currentCategory==='Recent'? 'bg-white dark:bg-neutral-800 dark:border-0':'bg-neutral-500/0 border-0'}`} handleClick={()=>setCurrentCategory('Recent')}>Recent</ButtonRounded>
+              <ButtonRounded styleClass={`${currentCategory==='Important'? 'bg-white dark:bg-neutral-800 dark:border-0':'bg-neutral-500/0 border-0'}`} handleClick={()=>setCurrentCategory('Important')}>Important</ButtonRounded>
+              <ButtonRounded styleClass={`${currentCategory==='promotion'? 'bg-white dark:bg-neutral-800 dark:border-0':'bg-neutral-500/0 border-0'}`} handleClick={()=>setCurrentCategory('promotion')}>promotion</ButtonRounded>
+              <ButtonRounded styleClass={`${currentCategory==='printing'? 'bg-white dark:bg-neutral-800 dark:border-0':'bg-neutral-500/0 border-0'}`} handleClick={()=>setCurrentCategory('printing')}>printing</ButtonRounded>
             </div>
           </div>
           <ButtonCircular size="md" handleClick={() => setShowForm(!showForm)}>
             <FiPlus />
           </ButtonCircular>
         </div>
-        <div className="flex flex-wrap">
-          {resources.map((resource, index) => (
-            <div key={index} className="flex flex-col w-1/4 p-4 rounded">
+        <div className="grid grid-cols-4 gap-10">
+          {
+            resources.length <= 0 ? 
+           <div className="min-h-[400px] w-full flex items-center"> <p className="h-20 w-full flex justify-center items-center bg-neutral-100 rounded-md">No Item found</p></div> :
+
+          resources.map((resource, index) => (
+            <div key={index} className="flex flex-col   rounded">
               <div
-                className="bg-neutral-200 h-36 flex justify-center items-center rounded-lg  overflow-hidden group relative cursor-pointer"
+                className="bg-neutral-200 dark:bg-neutral-900 h-48 flex justify-center items-center rounded-lg  overflow-hidden group relative cursor-pointer"
                 onMouseOver={() => setHoveredIndex(index)}
                 onClick={() => setShowMedia(resource._id)}
               >
@@ -105,7 +109,7 @@ const Resources = () => {
                      (
                       <img
                         src={resource.url}
-                        className="absolute h-full w-full bg-neutral-200"
+                        className="absolute h-full w-full bg-neutral-200 object-cover"
                       />
                     ) : getFileExtension(resource.url) === "videoType" ? (
                       <video
@@ -204,21 +208,35 @@ const Resources = () => {
                   <h3 className="font-semibold text-lg">
                     {resource.title ? resource.title : "Untitled"}
                   </h3>
-                  <p className="text-xs font-medium">
+                  <p className="text-xs font-medium flex gap-2 items-center">
+                    <FiCalendar className="text-neutral-500"/>
                     {formatStdDate(resource.createdAt)}{" "}
                     {resource?.size && (
+                      <>
+                    <FiCloud className="text-neutral-500"/>
+
                       <span className="">
-                        {" "}
-                        <span className=" text-neutral-300">|</span>{" "}
+                       
+                   
                         {`${formatBytesToMB(resource?.size)}`}
                       </span>
+                      </>
                     )}
                   </p>
                 </div>
-                <p>
-                  <ProfilePic picSrc={resource.uploadedBy?.profilePicture} />
-                  {resource.uploadedBy?.username}
-                </p>
+                <div className="relative group">
+                  <ProfilePic picSrc={resource.uploadedBy?.profilePicture} size="md" />
+                  <span className="w-6 h-6 flex justify-center items-center rounded-full bg-black dark:border-neutral-900 border border-white border-2 cursor-default text-white text-xs font-semibold group-hover:px-3  group-hover:w-auto absolute right-0 -bottom-2 capitalize" >
+                    { 
+                   resource.uploadedBy?.username.substring(0,2)
+                  }
+                  <span className="group-hover:flex hidden lowercase ">
+                  { 
+                   resource.uploadedBy?.username.split(' ')[0].substring(2)
+                  }
+                  </span>
+                  </span>
+                </div>
               </div>
             </div>
           ))}

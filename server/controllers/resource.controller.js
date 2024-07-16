@@ -1,14 +1,31 @@
+import mongoose from "mongoose";
 import Resource from "../models/resource.model.js";
 import { errorHandler } from "../utils/error.js";
 
+
+
 export const getResources = async (req, res) => {
   try {
-    const resources = await Resource.find().populate('uploadedBy', 'username, profilePicture').sort({ createdAt: -1 });
+    const { category, userId } = req.query;
+
+    let query = {};
+
+    if (category === 'Important') {
+      query = { markedAsImportantBy: new mongoose.Types.ObjectId(String(userId)) }; // Only resources marked as important by this user
+    } else if (category=== 'promotion' || category=== 'printing') {
+      query = { type: category }; // Only documents
+    }
+
+    const resources = await Resource.find(query)
+      .populate('uploadedBy', 'username profilePicture')
+      .sort({ createdAt: -1 });
+
     res.status(200).json(resources);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch resources', error: error.message });
   }
 };
+
 export const getResourceById = async (req, res) => {
   const { id } = req.params;
   

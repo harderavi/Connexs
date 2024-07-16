@@ -9,7 +9,7 @@ const ButtonCircular = ({ children, size, styleClass, handleClick }: CircleButto
   
   return (
     <button
-      className={`${btnSize} bg-white border border-neutral-300 rounded-full flex justify-center items-center ${styleClass}`}
+      className={`${btnSize} bg-white border border-neutral-300 dark:bg-neutral-800 rounded-full flex justify-center items-center ${styleClass}`}
       onClick={handleClick}
     >
       {children}
