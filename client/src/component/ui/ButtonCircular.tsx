@@ -4,12 +4,12 @@ interface CircleButtonProps {
   styleClass?: string;
   handleClick: (e:React.MouseEvent<HTMLButtonElement>) => void;
 }
-const CircleButton = ({ children, size, styleClass, handleClick }: CircleButtonProps) => {
+const ButtonCircular = ({ children, size, styleClass, handleClick }: CircleButtonProps) => {
   const btnSize = size === "lg" ? "w-24 h-24" : size === "md" ? "w-8 h-8" : "w-4 h-4 ";
   
   return (
     <button
-      className={`${btnSize} bg-gray-200 rounded-full p-2 text-gray-700 ${styleClass}`}
+      className={`${btnSize} bg-white border border-neutral-300 rounded-full flex justify-center items-center ${styleClass}`}
       onClick={handleClick}
     >
       {children}
@@ -17,4 +17,4 @@ const CircleButton = ({ children, size, styleClass, handleClick }: CircleButtonP
   );
 };
 
-export default CircleButton;
+export default ButtonCircular;

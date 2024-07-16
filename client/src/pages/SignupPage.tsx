@@ -11,9 +11,11 @@ import {
   getStorage,
   ref,
   uploadBytesResumable,
-} from "firebase/storage"; 
+} from "firebase/storage";
 import { storage } from "../firebase";
-import { FiTrash } from "react-icons/fi"; 
+import { FiTrash } from "react-icons/fi";
+import { useFetchRoles, useFetchTeams } from "../hooks/useFetchMasterData";
+
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -25,20 +27,26 @@ interface FetchRoleData {
   _id: string;
   name: string;
 }
+interface DropdownItem {
+  id: string;
+  name: string;
+  imageUrl?: string;
+}
 const SignupPage = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    roleName: "",
-    teamName: "",
+    role: "",
+    team: "",
+    gender: "",
     profilePicture: "",
   });
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const profileFileRef = useRef<HTMLInputElement>(null);
-  const [roleData, setRoleData] = useState<RoleData[]>([]);
-  const [teamData, setTeamData] = useState<RoleData[]>([]);
+  const { roleData, error: roleError } = useFetchRoles();
+  const { teamData, error: teamError } = useFetchTeams();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [uploadFile, setUploadFile] = useState<File | null>(null);
@@ -46,54 +54,23 @@ const SignupPage = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadCompleted, setUploadCompleted] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchRoles = async () => {
-      const response = await fetch(`${API_BASE_URL}/api/role/getRoles`, {
-        method: "GET",
-      });
-      if (response.ok) {
-        const data: FetchRoleData[] = await response.json();
 
-        const transformedRoles: RoleData[] = data.map((role) => ({
-          id: role._id,
-          name: role.name,
-        }));
-        setRoleData(transformedRoles);
-      }
-    };
-    fetchRoles();
-    const fetchTeams = async () => {
-      const response = await fetch(`${API_BASE_URL}/api/team/getTeams`, {
-        method: "GET",
-      });
-      if (response.ok) {
-        const data: FetchRoleData[] = await response.json();
-
-        const transformedTeams: RoleData[] = data.map((team) => ({
-          id: team._id,
-          name: team.name,
-        }));
-        setTeamData(transformedTeams);
-      }
-    };
-    fetchRoles();
-    fetchTeams();
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  const handleRoleChange = (value: string | undefined) => {
-    setFormData((prevState) => ({ ...prevState, roleName: value || "" }));
+  const handleRoleChange = (value:DropdownItem  | undefined) => {
+    console.log(value?.id)
+    setFormData((prevState) => ({ ...prevState, role: value?.id || "" }));
   };
-  const handleTeamChange = (value: string | undefined) => {
-    setFormData((prevData) => ({ ...prevData, teamName: value || "" }));
+  const handleTeamChange = (value: DropdownItem | undefined) => {
+    setFormData((prevData) => ({ ...prevData, team: value?.id || "" }));
   };
   const handleFormSubmit = async () => {
     setError("");
-    const { username, email, password, roleName, teamName } = formData;
-    if (!username || !email || !password || !roleName || !teamName) {
+    const { username, email, password, role, team } = formData;
+    if (!username || !email || !password || !role || !team) {
       return setError("All fields are required!");
     }
     try {
@@ -138,19 +115,19 @@ const SignupPage = () => {
   }, [uploadFile]);
   const handleFileUpload = (image: File | null) => {
     setMessage("");
-    
+
     if (image) {
       const fileName = new Date().getTime() + image.name;
       const storageRef = ref(storage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, image);
       setUploadCompleted(false);
-          setUploading(true)
+      setUploading(true);
       uploadTask.on(
         "state_changed",
         (snapshot) => {
           // Observe state change events such as progress, pause, and resume
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          
+
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setUploadProgress(progress);
@@ -177,8 +154,8 @@ const SignupPage = () => {
             setFormData({ ...formData, profilePicture: downloadURL });
             // handleSave();
             setUploadCompleted(true);
-            setUploading(false) 
-            setUploadFile(null)
+            setUploading(false);
+            setUploadFile(null);
             setMessage("Profile picture uploaded successfully");
           });
         }
@@ -192,13 +169,12 @@ const SignupPage = () => {
     // Delete the file
     deleteObject(desertRef)
       .then(() => {
-        console.log('File deleted successfully');
-        setFormData({ ...formData, profilePicture: '' });
-        setUploadFile(null)
-
+        console.log("File deleted successfully");
+        setFormData({ ...formData, profilePicture: "" });
+        setUploadFile(null);
       })
       .catch((error) => {
-        console.error('Error deleting file:', error);
+        console.error("Error deleting file:", error);
       });
   };
   return (
@@ -211,16 +187,14 @@ const SignupPage = () => {
               profileFileRef.current?.click();
             }}
           >
-            
-            <ProfilePic size="lg" picSrc={formData.profilePicture}  loading={uploading? true: false} />
+            <ProfilePic
+              size="lg"
+              picSrc={formData.profilePicture}
+              loading={uploading ? true : false}
+            />
             <p className="text-center text-neutral-400">
-            {
-            uploadPercent > 0 && uploadPercent < 100 && 
-
-           uploadPercent
-          
-        }
-                  </p>
+              {uploadPercent > 0 && uploadPercent < 100 && uploadPercent}
+            </p>
 
             <input
               type="file"
@@ -231,10 +205,14 @@ const SignupPage = () => {
               hidden
             />
           </div>
-          {
-            formData.profilePicture && uploadCompleted &&           <span onClick={handleFileDelete} className="absolute w-8 h-8 cursor-pointer bg-red-600 flex justify-center items-center rounded-full translate-x-10 translate-y-5"><FiTrash className="text-white"/></span>
-
-          }
+          {formData.profilePicture && uploadCompleted && (
+            <span
+              onClick={handleFileDelete}
+              className="absolute w-8 h-8 cursor-pointer bg-red-600 flex justify-center items-center rounded-full translate-x-10 translate-y-5"
+            >
+              <FiTrash className="text-white" />
+            </span>
+          )}
         </div>
         <InputText
           name="username"
@@ -245,6 +223,59 @@ const SignupPage = () => {
           onChange={handleInputChange}
           validate={error && !formData.username ? true : false}
         />
+        <div className="flex gap-2">
+          <label className="flex gap-2 items-center ">
+            <div className="grid place-items-center ">
+              <input
+                type="radio"
+                name="gender"
+                value="male"
+                checked={formData.gender === "male"}
+                onChange={handleInputChange}
+                className="peer
+      col-start-1 row-start-1
+      appearance-none shrink-0
+      w-6 h-6 border-4 border-primary-100 rounded-full
+      focus:outline-none focus:ring-offset-0 focus:ring-2 focus:ring-primary-300
+      disabled:border-gray-400
+    "
+              />
+              <div
+                className="
+      col-start-1 row-start-1
+      w-2 h-2 rounded-full peer-checked:bg-primary-400
+    "
+              />
+            </div>
+            Male
+          </label>
+          <label className="flex gap-2 items-center ">
+            <div className="grid place-items-center ">
+              <input
+                type="radio"
+                name="gender"
+                value="female"
+                checked={formData.gender === "female"}
+                onChange={handleInputChange}
+                className="peer
+      col-start-1 row-start-1
+      appearance-none shrink-0
+      w-6 h-6 border-4 border-primary-100 rounded-full
+      focus:outline-none focus:ring-offset-0 focus:ring-2 focus:ring-primary-300
+      disabled:border-gray-400
+    "
+              />
+              <div
+                className="
+      col-start-1 row-start-1
+      w-2 h-2 rounded-full peer-checked:bg-primary-400
+    "
+              />
+            </div>
+            Female
+          </label>
+          
+        </div>
         <InputText
           name="email"
           label="Email"
@@ -267,16 +298,16 @@ const SignupPage = () => {
           data={roleData}
           id="role"
           title="User role"
-          onChange={handleRoleChange}
-          validate={error && !formData.email ? true : false}
-        />
+          onChange={()=>handleRoleChange}
+          validate={!!error && !formData.role}
+          />
         <Dropdown
           data={teamData}
           id="team"
           title="Team"
-          onChange={handleTeamChange}
-          validate={error && !formData.teamName ? true : false}
-        />
+          onChange={()=>handleTeamChange}
+          validate={!!error && !formData.team}
+          />
         <Button className="mt-4" clickHandle={handleFormSubmit}>
           Signup
         </Button>

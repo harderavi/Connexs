@@ -9,7 +9,7 @@ interface ProfilePicProps {
 const ProfilePic: React.FC<ProfilePicProps> = React.memo(
   ({ loading=false, picSrc, size = "sm", styleClass }) => {
     const PicSize =
-      size === "lg" ? "w-24 h-24 text-4xl" : size === "md" ? "w-8 h-8 text-md" : "w-6 h-6 text-xs";
+      size === "lg" ? "w-24 h-24 text-4xl" : size === "md" ? "w-12 h-12 text-md" : "w-8 h-8 text-xs";
     const defaultPic =
     "https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg";
 

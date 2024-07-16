@@ -5,6 +5,8 @@ import PageLoading from "./component/PageLoading";
 import PrivateRoute from "./component/PrivateRoute";
 import AddTeam from "./component/AddTeam";
 import SignupPage from "./pages/SignupPage";
+import UserPage from "./pages/UserPage";
+import Resources from "./pages/Resources";
 const Home = lazy(() => import("./pages/Home"));
 const Layout = lazy(() => import("./pages/Layout"));
 const SignInPage = lazy(() => import("./pages/SignInPage"));
@@ -19,6 +21,8 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/teams" element={<AddTeam />} />
             <Route path="/adduser" element={<SignupPage />} />
+            <Route path="/users" element={<UserPage />} />
+            <Route path="/resources" element={<Resources />} />
             </Route>
           </Route>
           <Route path="/signin" element={<SignInPage />} />

@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, useEffect } from 'react';
 
 interface InputTextProps {
   type: "text" | "password" | "number";
@@ -11,6 +11,9 @@ interface InputTextProps {
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(({ type = "text", label, name, value, onChange, validate=false }, ref) => {
   const [placeLabel, setPlaceLabel] = useState(false);
+  useEffect(()=>{
+    setPlaceLabel(true)
+  },[value])
   return (
     <div className="relative flex flex-col pt-5 ">
       <label

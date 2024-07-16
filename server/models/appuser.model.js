@@ -3,13 +3,13 @@ const appUserSchema = new  mongoose.Schema(
     {
         username:{
             type: String,
-            require: true,
+            required: true,
             unique: true,
 
         },
         email:{ 
             type: String,
-            require: true,
+            required: true,
             unique: true
         }, 
         password:{
@@ -17,12 +17,12 @@ const appUserSchema = new  mongoose.Schema(
         },
         gender:{
             type: String, 
-            require: true
+            required: true
         },
         role:{
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId, 
             ref:'Role',
-            require: true
+            required: true
         },
         team: {
             type: mongoose.Schema.Types.ObjectId,

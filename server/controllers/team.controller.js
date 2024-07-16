@@ -48,3 +48,28 @@ export  const getTeams = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const getUsersWithTeams = async (req, res) => {
+  try {
+    const teams = await Team.find()
+        .populate({
+          path: 'members',
+          select: 'username profilePicture',
+        })
+        .exec();
+        const allUsers = await AppUser.find({}, 'username profilePicture').exec();
+        // Get all member IDs from the teams
+    const teamMemberIds = teams.reduce((acc, team) => {
+      return acc.concat(team.members.map(member => member._id.toString()));
+    }, []);
+
+    // Filter users who are not in the teamMemberIds
+    const remainingUsers = allUsers.filter(user => !teamMemberIds.includes(user._id.toString()));
+
+    // Combine teams and remaining users into a single response
+    res.json({ teams, remainingUsers });
+} catch (error) {
+    console.error('Error fetching teams with member details:', error);
+    throw error;
+}
+};

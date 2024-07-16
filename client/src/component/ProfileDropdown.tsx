@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FiLock, FiLogOut, FiSettings } from "react-icons/fi";
 import ProfilePic from "./ui/ProfilePic";
-import CircleButton from "./ui/CircleButton";
+import CircleButton from "./ui/ButtonCircular";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";

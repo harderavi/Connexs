@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BrandLogo from "./BrandLogo";
 import { MdClear } from "react-icons/md";
 import ProfilePic from "./ui/ProfilePic";
-import CircleButton from "./ui/CircleButton";
+import CircleButton from "./ui/ButtonCircular";
 import { FiLock, FiLogOut, FiSettings } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";

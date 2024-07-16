@@ -12,8 +12,9 @@ interface DropdownProps {
   id?: string;
   title: string;
   data: DropdownItem[];
-  onChange: (value: string | undefined) => void;
+  onChange: (value: DropdownItem | undefined | null) => void;
   validate?: boolean;
+  selected?: DropdownItem | null;
 }
 
 const Dropdown = ({
@@ -21,8 +22,9 @@ const Dropdown = ({
   data,
   onChange,
   validate = true,
+  selected = null,
 }: DropdownProps) => {
-  const [selectedItem, setSelectedItem] = useState<DropdownItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<DropdownItem | null>(selected);
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -33,13 +35,21 @@ const Dropdown = ({
     callback: () => setIsOpen(false),
   });
 
-  const handleChange = useCallback((item: DropdownItem | null) => {
+  const handleChange = useCallback(
+    (item: DropdownItem | null) => {
       setSelectedItem(item);
-      onChange(item?.name);
+      onChange(item);
+      console.log(item)
       setIsOpen(false);
     },
     [onChange]
   );
+
+  const handleClearSelection = useCallback(() => {
+    setSelectedItem(null);
+    onChange(undefined);
+    setIsOpen(false);
+  }, [onChange]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (!isOpen && event.key === "ArrowDown") {
@@ -60,8 +70,12 @@ const Dropdown = ({
         break;
       case "Enter":
         event.preventDefault();
-        const selectedItem = focusedIndex === 0 ? null : data[focusedIndex - 1];
-        handleChange(selectedItem);
+        if (focusedIndex === 0) {
+          handleClearSelection();
+        } else {
+          const selectedItem = data[focusedIndex - 1];
+          handleChange(selectedItem);
+        }
         break;
       case "Escape":
         setIsOpen(false);
@@ -79,19 +93,15 @@ const Dropdown = ({
   }, [focusedIndex, isOpen]);
 
   useEffect(() => {
-    console.log(isOpen);
-  }, [isOpen]);
+    setSelectedItem(selected);
+  }, [selected]);
 
   const handleButtonClick = () => {
     setIsOpen((prev) => !prev);
   };
 
   return (
-    <div
-      className={`relative pt-5`}
-      ref={dropdownRef}
-      onKeyDown={handleKeyDown}
-    >
+    <div className="relative pt-5" ref={dropdownRef} onKeyDown={handleKeyDown}>
       <button
         className={`bg-white outline-none rounded-lg py-3 px-3 w-full text-left flex items-center justify-between text-primary-200 focus:border-primary-100 focus:ring-4 focus:ring-primary-50 ${
           isOpen && "bg-white border border-primary-100 ring-4 ring-primary-50"
@@ -115,7 +125,7 @@ const Dropdown = ({
               className={`p-3 hover:bg-primary-50/30 ${
                 focusedIndex === 0 ? "bg-primary-50/30" : ""
               }`}
-              onClick={() => handleChange(null)}
+              onClick={handleClearSelection}
             >
               Select
             </li>
@@ -131,12 +141,7 @@ const Dropdown = ({
                   {item.imageUrl && <img src={item.imageUrl} className="w-4" />}
                   {item.name}
                   {selectedItem?.id === item.id && (
-                    <FiCheck
-                      size={24}
-                      className={`font-bold ${
-                        selectedItem?.id === item.id ? "text-green-500" : ""
-                      }`}
-                    />
+                    <FiCheck size={24} className="font-bold text-green-500" />
                   )}
                 </li>
               ))}

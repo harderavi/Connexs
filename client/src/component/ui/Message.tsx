@@ -18,7 +18,7 @@ const Message:React.FC<MessageProps> = ({message, messageType }) => {
     },[])
 
   return (
-    <div className={`flex text-left   rounded-md   px-2 py-1 w-auto text-sm gap-2 ${messageType? 'text-red-600': 'text-green-600'}  ${ fixedPostion? 'fixed top-10 right-5' : 'relative'}` }>
+    <div className={`flex text-left   rounded-md   px-2 py-1 w-auto text-sm gap-2 ${messageType? 'text-red-600': 'text-green-600'}  ${ fixedPostion? 'fixed top-14 right-5 bg-white  rounded-md px-4 py-1 shadow-lg' : 'relative'}` }>
       <span className={`w-5 h-5  rounded-full flex items-center justify-center ${messageType?  'bg-red-600' : 'bg-green-50'}`}>
         { messageType?
         <AiOutlineInfo className="text-white"/>:
