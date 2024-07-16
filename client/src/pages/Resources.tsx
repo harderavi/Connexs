@@ -7,7 +7,6 @@ import {
   FiCalendar,
   FiCloud,
   FiDownload,
-  FiDownloadCloud,
   FiFileText,
   FiFilm,
   FiFolder,
