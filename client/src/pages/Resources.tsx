@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import UploadResource from "../component/UploadResource";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
@@ -11,18 +11,13 @@ import {
   FiImage,
   FiMaximize,
   FiPlus,
-  FiX,
+ 
 } from "react-icons/fi";
 import ProfilePic from "../component/ui/ProfilePic";
 import { formatBytesToMB, formatStdDate } from "../services/formatServices";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
-import FileSaver from "file-saver";
-import { renderMatches } from "react-router-dom";
 import ResourcePopover from "../component/ResourcePopover";
 import { handleDownload, markDocumentImportant } from "../services/resourceService";
-import CircleButton from "../component/ui/ButtonCircular";
 import ButtonCircular from "../component/ui/ButtonCircular";
-import Button from "../component/ui/Button";
 import ButtonRounded from "../component/ui/ButtonRounded";
 import {getFileExtension} from "../services/resourceService"
 interface Resource {

@@ -19,14 +19,7 @@ import { useFetchRoles, useFetchTeams } from "../hooks/useFetchMasterData";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-interface RoleData {
-  id: string;
-  name: string;
-}
-interface FetchRoleData {
-  _id: string;
-  name: string;
-}
+
 interface DropdownItem {
   id: string;
   name: string;
@@ -45,8 +38,8 @@ const SignupPage = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const profileFileRef = useRef<HTMLInputElement>(null);
-  const { roleData, error: roleError } = useFetchRoles();
-  const { teamData, error: teamError } = useFetchTeams();
+  const { roleData } = useFetchRoles();
+  const { teamData } = useFetchTeams();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [uploadFile, setUploadFile] = useState<File | null>(null);

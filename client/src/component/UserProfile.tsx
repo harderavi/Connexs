@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import ProfilePic from "./ui/ProfilePic";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+
 import InputText from "./ui/InputText";
 import Button from "./ui/Button";
 import Radio from "./ui/Checkbox";
@@ -34,8 +33,10 @@ const UserProfile = ({ userId, onUserUpdate }: UserProfileProp) => {
   const [formData, setFormData] = useState<Partial<User>>({});
   const [error, setError] = useState("");
 
-  const { roleData, error: roleError } = useFetchRoles();
-   const { teamData, error: teamError } = useFetchTeams();
+  const { roleData } =useFetchRoles();
+   const { teamData} = useFetchTeams();
+  // const { roleData, error: roleError } = useFetchRoles();
+  //  const { teamData, error: teamError } = useFetchTeams();
 
   const handleRoleChange = (value: DropdownItem | undefined | null) => {
       setFormData((prevState) => ({ ...prevState, role: value?.id || "" }));
